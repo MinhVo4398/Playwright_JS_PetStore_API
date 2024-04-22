@@ -8,11 +8,11 @@ import {
 const base_url = "https://petstore.swagger.io/v2";
 
 test.describe("API pet store", () => {
-  test("POST 200 - Create pet successfully", async ({ request }, testInfo) => {
-    if (testInfo.status !== testInfo.expectedStatus) {
+  test.afterEach(async ({}, testInfo) => {
+    if (testInfo.status !== testInfo.expectedStatus)
       console.log(`${testInfo.title} did not run as expected!`);
-    }
-
+  });
+  test("POST 200 - Create pet successfully", async ({ request }, testInfo) => {
     data.id = getRandomNumber();
     data.name = "siba";
     const response = await request.post(`${base_url}/pet`, {
@@ -23,10 +23,6 @@ test.describe("API pet store", () => {
   });
 
   test("POST 500 - Create invalid pet store", async ({ request }, testInfo) => {
-    if (testInfo.status !== testInfo.expectedStatus) {
-      console.log(`${testInfo.title} did not run as expected!`);
-    }
-
     data.id = "aaaaa";
     const response = await request.post(`${base_url}/pet`, {
       data: data,
@@ -37,18 +33,11 @@ test.describe("API pet store", () => {
     console.log(await response.json());
   });
 
-  test("GET 405 - Wrong method create pet store", async ({
-    request,
-  }, testInfo) => {
-    if (testInfo.status !== testInfo.expectedStatus) {
-      console.log(`${testInfo.title} did not run as expected!`);
-    }
-
+  test("GET 405 - Wrong method create pet store", async ({  request,  }, testInfo) => {
     data.id = getRandomNumber();
     const response = await request.get(`${base_url}/pet`, {
-        data: data,
-      });
+      data: data,
+    });
     expect(response.status()).toBe(405);
-
   });
 });
