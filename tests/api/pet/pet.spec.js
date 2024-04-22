@@ -14,6 +14,7 @@ test.describe("API pet store", () => {
     }
 
     data.id = getRandomNumber();
+    data.name = "siba";
     const response = await request.post(`${base_url}/pet`, {
       data: data,
     });
