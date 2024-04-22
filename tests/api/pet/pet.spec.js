@@ -21,6 +21,7 @@ test.describe("API pet store", () => {
     expect(response.status()).toBe(200);
     console.log(await response.json());
   });
+
   test("POST 500 - Create invalid pet store", async ({ request }, testInfo) => {
     if (testInfo.status !== testInfo.expectedStatus) {
       console.log(`${testInfo.title} did not run as expected!`);
@@ -34,5 +35,20 @@ test.describe("API pet store", () => {
     const json = await response.json();
     expect(json.message).toBe("something bad happened");
     console.log(await response.json());
+  });
+
+  test("GET 405 - Wrong method create pet store", async ({
+    request,
+  }, testInfo) => {
+    if (testInfo.status !== testInfo.expectedStatus) {
+      console.log(`${testInfo.title} did not run as expected!`);
+    }
+
+    data.id = getRandomNumber();
+    const response = await request.get(`${base_url}/pet`, {
+        data: data,
+      });
+    expect(response.status()).toBe(405);
+
   });
 });
